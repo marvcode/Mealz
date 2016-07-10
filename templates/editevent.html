@@ -1,0 +1,185 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<div class="jumbotron">
+  <h2>Family Gathering Planner</h2>
+</div>
+<div class="panel panel-warning">       
+     <!-- Default panel contents -->
+     <div class="panel-heading"><h1>Edit Event</h1> 
+         <h3>Oraganizer: {{webuser_fname}}  {{ webuser_lname }}  :  {{ webuser_email }}</h3>
+         </div>
+    
+    
+<div class="panel-body">
+     <!-- Form to allow originator to edit their event details and requested items for this event -->
+     <form action="{{ url_for('edit_event', user_id = webuserid, evt_id= web_evt_id) }}" method = 'POST'>
+         {{ webform.csrf_token }}
+         <h3><U>Event Information:</U></h3>
+         
+         <p>{{webform.evt_num.label}} {{webform.evt_num(value = webevent.evt_num, size=5)}} {{webform.evt_num.errors[0]}} </p>
+         
+         <p>{{webform.evt_name.label}} {{webform.evt_name(size=50, height=80, value = webevent.evt_name)}} {{webform.evt_name.errors[0]}}
+         <p>{{webform.evt_location.label}} {{webform.evt_location(size=60, height=80, value = webevent.evt_location)}} {{webform.evt_location.errors[0]}}</p>
+         <p>{{webform.evt_address.label}} {{webform.evt_address(size=50, height=80, value = webevent.evt_address)}} {{webform.evt_address.errors[0]}}
+         <!--Trivia:Longest city name in US is 22 Char 'Rancho Santa Margarita, California' -->
+         {{webform.evt_city.label}} {{webform.evt_city(size=25, height=80, value = webevent.evt_city)}} {{webform.evt_city.errors[0]}}
+         {{webform.evt_state.label}} {{webform.evt_state(size=3, height=80, value = webevent.evt_state)}} {{webform.evt_city.errors[0]}}
+         {{webform.evt_zip.label}} {{webform.evt_zip(size=9, height=80, value = webevent.evt_zip)}} {{webform.evt_zip.errors[0]}}</p>
+         
+         <p>{{webform.evt_notes.label}}
+         {{webform.evt_notes(size=100, height=80, value = webevent.evt_notes)}} {{webform.evt_notes.errors[0]}}</p>
+         
+         <h3><U>Enter Event Date & Time</U></h3>
+         <h5 style="color:red; font-size:12pt; font-weight:bold">Currently your event is scheduled for : {{webevent.evt_date}}  @ {{webevent.evt_time}} </h5>
+         </br>
+         or enter New date & Time: here... </br>
+         <div class="formpadding">
+			 
+			Date:
+			 {{webform.evt_month}} {{ webform.evt_month.errors[0] }}
+             {{webform.evt_day}} {{ webform.evt_day.errors[0] }}
+             {{webform.evt_year}} {{ webform.evt_year.errors[0] }}
+            Time:
+             {{webform.evt_hour}} {{ webform.evt_hour.errors[0] }}
+             {{webform.evt_minute}} {{ webform.evt_minute.errors[0] }}
+             {{webform.evt_tz}} {{ webform.evt_tz.errors[0] }}			 
+		</div>
+		
+			<h3><U>Requested Meal Items:</U></h3>
+			<h5><I>below are your previous requested items.  Update as needed below...
+			</br> 
+			</h5></I>
+			</br>
+
+            <!-- Table to show original requested items-->
+            <!-- ??? is this table still needed ?  does table below suffice? -->
+            <table class="table">
+              Original Requested items...
+               <tr><B>
+                  <th>Category:</th>
+                  <th>Qty Requested:</th>
+                  <th>Note:</th>                
+               </B></tr>
+              {%for item in webreq %}
+               <tr>
+                  <td>{{item.category}}</td>
+                  <td>{{item.qty_rqst}}</td>                  
+                  <td> {{item.rqst_note}}</td>
+               </tr>
+              {% endfor %}
+            </table>
+            
+
+            <!-- Table to allow for new values in these fields -->
+            <table class="table">
+              Update requested items as needed below...
+              <h3><tr>
+                  <th>Category:</th>
+                  <th>Quantity:</th>
+                  <th>Notes:</th>
+              </h3></tr>
+              <tr>
+                  <td><h4>Appetizers / Salads  </h4>
+                  </td>
+                  <td>
+                  {{webform.req_app_qty(size=5, value = web_req_app_qty)}} {{ webform.req_app_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_app_note(size=80, value = web_req_app_note)}} {{ webform.req_app_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Main Dish</h4>
+                  </td>
+                  <td>
+                  {{webform.req_main_qty(size=5, value = web_req_main_qty)}} {{ webform.req_main_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_main_note(size=80, value = web_req_main_note)}} {{ webform.req_main_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Side Dish</h4>
+                  </td>
+                  <td>
+                  {{webform.req_side_qty(size=5, value = web_req_side_qty)}} {{ webform.req_side_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_side_note(size=80, value = web_req_side_note)}} {{ webform.req_side_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Bread</h4>
+                  </td>
+                  <td>
+                  {{webform.req_bread_qty(size=5, value = web_req_bread_qty)}} {{ webform.req_bread_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_bread_note(size=80, value = web_req_bread_note)}} {{ webform.req_bread_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Desserts</h4>
+                  </td>
+                  <td>
+                  {{webform.req_dessert_qty(size=5, value = web_req_dessert_qty)}} {{ webform.req_dessert_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_dessert_note(size=80, value = web_req_dessert_note)}} {{ webform.req_dessert_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Beverages</h4>
+                  </td>
+                  <td>
+                  {{webform.req_bev_qty(size=5, value = web_req_bev_qty)}} {{ webform.req_bev_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_bev_note(size=80, value = web_req_bev_note)}} {{ webform.req_bev_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Utensils</h4>
+                  </td>
+                  <td>
+                  {{webform.req_uten_qty(size=5, value = web_req_uten_qty)}} {{ webform.req_uten_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_uten_note(size=80, value = web_req_uten_note)}} {{ webform.req_uten_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Cups, Plates, Napkins</h4>
+                  </td>
+                  <td>
+                  {{webform.req_cups_qty(size=5, value = web_req_cups_qty)}} {{ webform.req_cups_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_cups_note(size=80, value = web_req_cups_note)}} {{ webform.req_cups_note.errors[0] }}
+                  </td>
+               </tr>
+               <tr>
+                  <td> <h4>Miscellaneous</h4>
+                  </td>
+                  <td>
+                  {{webform.req_misc_qty(size=5, value = web_req_misc_qty)}} {{ webform.req_misc_qty.errors[0] }}
+                  </td>
+                  <td>
+                  {{webform.req_misc_note(size=80, value = web_req_misc_note)}} {{ webform.req_misc_note.errors[0] }}
+                  </td>
+               </tr>
+               </table>
+           </div>       
+           <div class="formpadding">        	       
+        	<input type='submit' value='Update Event Details'>
+            <a href='{{ url_for('showPublic') }}' >Cancel</a> </br>
+           </div>    
+
+               
+           </div>   
+    </div>
+-->
+
+{% endblock %}

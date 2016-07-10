@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+
+<div class="jumbotron">
+  <h1>Family Gathering Planner</h1>
+</div>
+  <div class="panel panel-warning">       
+       <!-- Default panel contents -->
+       <div class="panel-heading"><h2>Find an Event</h2> 
+          <h2>You will need the Event Organizer's last name and the Event ID.</h2>
+          </br>
+ 
+         <!--Handle MESSAGE FLASHING -->
+         {% with messages = get_flashed_messages() %}
+             {% if messages %}
+               <ul>
+                  {% for message in messages %}
+                     <li><strong>{{message}}</strong></li>
+                  {% endfor %}
+               </ul>
+             {% endif %}
+         {% endwith %}
+ 
+         <form action="{{ url_for('search') }}" method = 'POST'>
+            {{ webform.csrf_token }}
+            <h3>Event Organizer's Last Name:</h3>
+            {{ webform.org_lname }} {{ webform.org_lname.errors[0] }}
+            <h3>Event ID:</h3>
+            {{ webform.evt_id }} {{ webform.evt_id.errors[0] }}
+            </br>
+            </br>
+            <input type='submit' value='Search & Contribute'>
+            <!--<a href='{{ url_for('showPublic') }}' >  Cancel</a> -->
+         </form>
+         </br>
+       </div>  
+  </div>
+</div>
+{% endblock %}
+
+<!-- <input type="text" size="25" name="posted_lname"></br> -->
+
+<!-- <input type="text" size="25" name="posted_evt_id"></br> -->

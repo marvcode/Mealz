@@ -1,0 +1,33 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+HELLO IM HERE
+
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="{{ url_for('static', filename='fammeal1.jpg') }}" alt="...">
+    </div>
+    <div class="item">
+      <img src="{{ url_for('static', filename='fammeal2.jpg') }}" alt="...">
+    </div>
+    ...
+  </div>
+</div>
+
+<div class="jumbotron">
+  <h1>Family Gathering Planner</h1>
+  <p>Let us help you plan your next big event!  Family gatherings, PotLuck Dinners, etc.</p>
+  <p><a class="btn btn-primary btn-lg" href="{{url_for('showLoggedin')}}" role="button">Create an Event</a>
+  <a class="btn btn-primary btn-lg" href="{{url_for('showLoggedin')}}" role="button">Show My Events</a>
+  <a class="btn btn-primary btn-lg" href="{{url_for('search', user_id=webuserid)}}"" role="button">Search/ Contribute to an Event</a></p>
+</div>
+		
+		<div class="container">
+			
+		</div>
+
+{% endblock %}
