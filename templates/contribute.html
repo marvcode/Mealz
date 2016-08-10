@@ -2,54 +2,61 @@
 {% block content %}
 {% include "header.html" %}
 
-<div class="jumbotron">
-  <h1>Family Gathering Planner</h1>
+<div class="jumbotron text-center">
+  <h1>Mealz</h1><h2> A Gathering Planner</h2>
+  <p>Let us help you plan your next big event!  Family gatherings, PotLuck Dinners, etc.</p>
 </div>
 
-<div class="panel panel-warning">       
-     <!-- Default panel contents -->
-     <div class="panel-heading"><h3><Center>Contribute to an Event</Center></h3> 
-        <h2><Center>Sign up to bring items for this event.</Center></h2>
-	 <!--Handle MESSAGE FLASHING -->
-			{% with messages = get_flashed_messages() %}
-			  {% if messages %}
-			  <ul>
-				 {% for message in messages %}
-				   <li><strong>{{message}}</strong></li>
-				 {% endfor %}
-			  </ul>
-			  {% endif %}
-			{% endwith %}
+<div class="container">
 
-       <img src= {{ url_for('static', filename = webevent_image ) }} width="160" height="160" alt="" title="" border="0">
-       <h3>Event Name:</h3> {{webevent_name}} 
-       <h3>Event Notes:</h3> {{webevent_notes}} 
-       <h3>Event Organizer:</h3> {{webevent_org_fname}} {{webevent_org_lname}} </br>
-       <h3>Event Location:</h3> {{webevent_location}}  @
-        {{webevent_address}} , {{webevent_city}}, {{webevent_state}}  {{webevent_zip}} </br>
-        {{webevent_date}} starting at: {{webevent_time}}
+<h1>Event Info</h1>
+
+ <!--Handle MESSAGE FLASHING -->
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		 {% for message in messages %}
+		   <div class="alert alert-info"><h3>{{message}}<h3></div>
+		 {% endfor %}
+	  {% endif %}
+	{% endwith %}
+
+       <div class="col-lg-3"><img src= {{ url_for('static', filename = webevent_image ) }} width="160" height="160" alt="" title="" border="0"></div>
+       <div class="col-lg-3">
+		   <h3>Event Name:</h3> {{webevent_name}} 
+		   <h3>Event Organizer:</h3> {{webevent_org_fname}} {{webevent_org_lname}} 
+       </div>
+       <div class="col-lg-3">
+		   <h3>Event Location:</h3> {{webevent_location}}  @
+        {{webevent_address}} , {{webevent_city}}, {{webevent_state}}  {{webevent_zip}}
+        <h3>Event Date and Time:</h3>
+        {{webevent_date}} starting at: {{webevent_time}} 
+        </div>
+       <div class="col-lg-3"><h3>Event Notes:</h3> {{webevent_notes}} </div>
         
-        </br>
-        
-        </br>
-
-
-    </div>  
+    </div>
+    </br>
+    <div class="container">
+    
+    <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Contribute to Event:</h3>
+  </div>
          <div class="panel-body">
             <!-- Outer Table for Categories-->
             <table class="table">
-               <tr><B>
+               <tr class="active"><B>
                   <th>Category:</th>
                   <th>Qty Requested:</th>
-                  <th>Note:</th>                
+                  <th>Note:</th>
+                  <th>Contributed Items:</th>             
                </B></tr>
               {%for item in webrequested %}
                <tr>
-                  <td>{{item.category}}</td>
-                  <td>{{item.qty_rqst}}</td>                  
-                  <td> {{item.rqst_note}}  </td>
+                  <td><h4>{{item.category}}</h4></td>
+                  <td><h4>{{item.qty_rqst}}</h4></td>                  
+                  <td><h4>{{item.rqst_note}}</h4></td>
                   <td> <table class="table"> <!-- Inner Table for Comitted items-->
-                        <tr>                      
+                        <tr class="active">                      
                           <th>  Committed Item:  </th>
                           <th>  QTY:  </th>
                           <th>  Name:  </th>
@@ -75,7 +82,7 @@
                              {# Wait for last loop to check for Qty Committed #}
                              {% if loop.last %}
                                 {% if (count[0] < item.qty_rqst|int) %}
-                                   Hey! More items needed here!
+                                   <div class="alert alert-danger">Hey! More items needed here!</div>
                                 {% endif %}
                              {% endif %}
                           {% endfor %}
@@ -96,17 +103,23 @@
             {{webform.category}} {{ webform.category.errors[0] }}
              <U>Item:</U>
              {{ webform.item(placeholder=webform.item.description, size =40) }} {{ webform.item.errors[0] }}
-             </br>
+             </br></br>
              <U>Note: </U>
                {{ webform.note(placeholder=webform.note.description, size =69) }} {{ webform.note.errors[0] }}
-               <input type='submit' value="I'll Bring it">
-                <a href='{{ url_for('showPublic') }}' >Cancel</a>
+               </br></br>
+               <input class="btn btn-primary" type='submit' value="I'll Bring it">
+                <a class="btn btn-danger" href='{{ url_for('showPublic') }}' >Cancel</a>
                </br>
                </br>
              </form>
             
          </div>   
 </div>
+</div>
+</div>
+</br>
+
+{% include "footer.html" %}
 
 
 {% endblock %}
