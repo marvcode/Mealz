@@ -227,7 +227,7 @@ class ContributeForm(Form):
                             ("Beverages" , "Beverages"),
                             ("Utensils" , "Utensils"),
                             ("Cups, Plates, Napkins" , "Cups, Plates, Napkins"),
-                            ("Misc." , "Miscellaneous")], 
+                            ("Miscellaneous" , "Miscellaneous")], 
                   validators=[
                   NoneOf("--", message="Choose a Category!")])
     item = StringField("Dish Name", validators=[

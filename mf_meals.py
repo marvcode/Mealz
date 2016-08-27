@@ -691,6 +691,7 @@ def contribute(org_id, event_id):
             
     else:
         # HTTP method is GET
+            
         return render_template('contribute.html',
                             webform = ContributeForm(),
                             webevent_org_id = event.org_id,
